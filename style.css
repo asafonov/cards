@@ -1,131 +1,131 @@
-:root {	
-	--card_size: 20vh;
-	--value_top_position: calc(var(--card_size)*0.05);
-	--suit_left_position: calc(var(--card_size)*0.05);
-	--suit_top_position: calc(var(--card_size)*0.165);
+:root {
+  --card_size: 20vh;
+  --value_top_position: calc(var(--card_size)*0.05);
+  --suit_left_position: calc(var(--card_size)*0.05);
+  --suit_top_position: calc(var(--card_size)*0.165);
 }
 
 *, html, body, h1, h2, h3, h4, h5, h6, a, img, ul, ol, li, div, span, b, time, mark,
-u, p, input, label, textarea, select, option {	
-                      							margin: 0;
-                      							padding: 0;
-                      							position: relative;
-                      							border: 0;
-                      							vertical-align: top;
-                      							z-index: auto;
-                                            	box-sizing: border-box; 
-                                            	transition: 1s ease-in-out;
-                                            }												  			  										
+u, p, input, label, textarea, select, option {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  border: 0;
+  vertical-align: top;
+  z-index: auto;
+  box-sizing: border-box;
+  transition: 1s ease-in-out;
+}
 
-html, 
-body {	
-	width: 100%;
-	height: 100%;
-	background-color: #282b2f;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #282b2f;
 }
 
 .board {
-	display: flex;
-	width: 100%;
-	height: 100%;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 svg * {
-	stroke-linecap: round;
-	stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .body svg {
-	height: var(--card_size);
+  height: var(--card_size);
 }
 
 .body svg rect {
-	width: 100%;
-	height: 100%;
-	fill: white; 
-	stroke: black;
-	stroke-width: 0.2vh;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  stroke: black;
+  stroke-width: 0.2vh;
 }
 
 .suit,
 .value,
 .middle,
 .big_pic {
-	position: absolute;
+  position: absolute;
 }
 
 .suit.top {
-	top: var(--suit_top_position);
-	left: var(--suit_left_position);
+  top: var(--suit_top_position);
+  left: var(--suit_left_position);
 }
 
 .suit.bottom {
-	bottom: var(--suit_top_position);
-	right: var(--suit_left_position);
-	transform: rotateX(180deg);
+  bottom: var(--suit_top_position);
+  right: var(--suit_left_position);
+  transform: rotateX(180deg);
 }
 
 .suit svg {
-	height: calc(var(--card_size)*0.09);
+  height: calc(var(--card_size)*0.09);
 }
 
 .value.top {
-	top: var(--value_top_position);
-	left: var(--suit_left_position);
+  top: var(--value_top_position);
+  left: var(--suit_left_position);
 }
 
 .value.bottom {
-	bottom: var(--value_top_position);
-	right: var(--suit_left_position);
-	transform: rotateY(180deg) rotateX(180deg);
+  bottom: var(--value_top_position);
+  right: var(--suit_left_position);
+  transform: rotateY(180deg) rotateX(180deg);
 }
 
 .value,
 .suit {
-	width: calc(var(--card_size)*0.09);
-	display: flex;
-	justify-content: center;
+  width: calc(var(--card_size)*0.09);
+  display: flex;
+  justify-content: center;
 }
 
 .value svg {
-	height: calc(var(--card_size)*0.1);
+  height: calc(var(--card_size)*0.1);
 }
 
 .middle,
 .big_pic {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
 }
 
 .middle svg {
-	height: calc(var(--card_size)*0.45);
-	padding: 0.15vh;
+  height: calc(var(--card_size)*0.45);
+  padding: 0.15vh;
 }
 
 .middle .big_pic.king svg,
-.middle .big_pic.queen svg, 
+.middle .big_pic.queen svg,
 .middle .big_pic.jack svg  {
-	stroke: black;
-	stroke-width: 0.05vh;
+  stroke: black;
+  stroke-width: 0.05vh;
 }
 
 .suit svg,
 .value svg,
 .middle svg {
-	display: none;
+  display: none;
 }
 
 .card.hearts .suit .hearts svg,
 .card.diamonds .suit .diamonds svg,
 .card.spades .suit .spades svg,
 .card.clubs .suit .clubs svg {
-	display: block;
+  display: block;
 }
 
 .card.ace .value .ace svg,
@@ -141,7 +141,7 @@ svg * {
 .card.four .value .four svg,
 .card.three .value .three svg,
 .card.two .value .two svg {
-	display: block;
+  display: block;
 }
 
 .card.ace .middle .ace svg,
@@ -157,44 +157,22 @@ svg * {
 .card.four .middle .four svg,
 .card.three .middle .three svg,
 .card.two .middle .two svg {
-	display: block;
+  display: block;
 }
 
 .suit svg,
 .value svg {
-	fill: black;
+  fill: black;
 }
 
 .red .suit svg,
 .red .value svg,
 .red .middle svg {
-	fill: red;
+  fill: red;
 }
 
 .red .middle .big_pic.king svg,
-.red .middle .big_pic.queen svg, 
+.red .middle .big_pic.queen svg,
 .red .middle .big_pic.jack svg {
-	stroke: red;
+  stroke: red;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
