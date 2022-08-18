@@ -11,7 +11,7 @@ class DurakController {
     this.addCards(this.opponent, 6)
     asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
     this.trump = this.deck.getCard()
-    asafonov.messageBus.send(asafonov.events.TRUMP_UPDATED, this.opponent)
+    asafonov.messageBus.send(asafonov.events.TRUMP_UPDATED, this.trump)
   }
 
   addCards (arr, cnt) {

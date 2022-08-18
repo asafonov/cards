@@ -189,3 +189,15 @@ svg * {
   height: 33%;
   width: 100%;
 }
+
+.game {
+  width: 70%;
+  height: 100%;
+}
+
+.trump, .left {
+  width: 15%;
+  height: 100%;
+}
+
+
