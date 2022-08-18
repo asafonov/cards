@@ -179,10 +179,13 @@ svg * {
 }
 
 .board div {
-  height: 33%;
-  width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+.me, .main, .opponent {
+  height: 33%;
+  width: 100%;
 }

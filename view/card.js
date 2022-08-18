@@ -80,4 +80,8 @@ class CardView {
     this.element.parentNode.removeChild(this.element)
     this.element = null
   }
+
+  destroy() {
+    this.element = null
+  }
 }
