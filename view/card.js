@@ -1,6 +1,12 @@
 class CardView {
   constructor(card) {
     this.model = card
+    this.colors = {
+      hearts: 'red',
+      diamonds: 'red',
+      spades: '',
+      clubs: ''
+    }
     this.suits = {
       hearts: '<div class="hearts"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.41 9.21"><path d="M5,9.96c.24-.25.24-.25.97-1.02A20.408,20.408,0,0,0,7.89,6.75,5.609,5.609,0,0,0,9.21,3.43a2.9,2.9,0,0,0-.69-1.96A2.067,2.067,0,0,0,6.83.75,1.773,1.773,0,0,0,5,1.8a1.287,1.287,0,0,0-.47-.66A2.269,2.269,0,0,0,3.21.75a2.357,2.357,0,0,0-1.27.36A2.825,2.825,0,0,0,.8,3.44,5.719,5.719,0,0,0,2.01,6.56,28.9,28.9,0,0,0,5,9.96Z" transform="translate(-0.8 -0.75)"/></svg></div>',
       diamonds: '<div class="diamonds"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.65 9.8"><path d="M5,.3,1.17,5.14,5,10.1,8.82,5.14Z" transform="translate(-1.17 -0.3)"/></svg></div>',
@@ -43,7 +49,7 @@ class CardView {
 
   initElement() {
     this.element = document.createElement('div')
-    this.element.className = `card ${this.model.suit} ${this.model.value}`
+    this.element.className = `card ${this.model.suit} ${this.model.value} ${this.getColor(this.model.suit)}`
     this.element.innerHTML = '<div class="body"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 89"><rect rx="4"/></svg></div>'
     this.element.innerHTML += `<div class="suit top">${this.getSuit(this.model.suit)}</div><div class="suit bottom">${this.getSuit(this.model.suit)}</div>`
     this.element.innerHTML += `<div class="value top">${this.getValue(this.model.value)}</div><div class="value bottom">${this.getValue(this.model.value)}</div>`
@@ -52,6 +58,10 @@ class CardView {
 
   getElement() {
     return this.element
+  }
+
+  getColor (suit) {
+    return this.colors[suit]
   }
 
   getSuit (suit) {
