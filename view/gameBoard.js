@@ -41,7 +41,6 @@ class GameBoardView {
   }
 
   onTrumpUpdated (card) {
-    alert(JSON.stringify(card))
     this.trumpContainer.innerHTML = ''
     const cardView = new CardView(card)
     this.trumpContainer.appendChild(cardView.getElement())

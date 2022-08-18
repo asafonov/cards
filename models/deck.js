@@ -9,7 +9,8 @@ class Deck {
       for (let j = 0; j < numValues; ++j) {
         this.deck.push({
           suit: this.suits[i],
-          value: this.values[this.values.length - 1 - j]
+          value: this.values[this.values.length - 1 - j],
+          valueD: j
         })
       }
     }
