@@ -3,6 +3,7 @@ class GameBoardView {
     this.myContainer = document.querySelector('.board .me')
     this.opponentContainer = document.querySelector('.board .opponent')
     this.trumpContainer = document.querySelector('.board .trump')
+    this.gameContainer = document.querySelector('.board .game')
     this.addEventListeners(true)
   }
 
@@ -18,6 +19,7 @@ class GameBoardView {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.MY_UPDATED, this, 'onMyUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.OPPONENT_UPDATED, this, 'onOpponentUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_UPDATED, this, 'onGameUpdated')
   }
 
   onMyCardClick (index) {
@@ -42,6 +44,16 @@ class GameBoardView {
     for (let i = 0; i < list.length; ++i) {
       const cardView = new CardView(list[i])
       this.opponentContainer.appendChild(cardView.getElement())
+      cardView.destroy()
+    }
+  }
+
+  onGameUpdated (list) {
+    this.gameContainer.innerHTML = ''
+
+    for (let i = 0; i < list.length; ++i) {
+      const cardView = new CardView(list[i])
+      this.gameContainer.appendChild(cardView.getElement())
       cardView.destroy()
     }
   }

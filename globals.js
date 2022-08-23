@@ -5,6 +5,7 @@ window.asafonov.events = {
   MY_UPDATED: 'myUpdated',
   OPPONENT_UPDATED: 'opponentUpdated',
   TRUMP_UPDATED: 'trumpUpdated',
+  GAME_UPDATED: 'gameUpdated',
   CARD_CLICKED: 'cardClicked'
 }
 window.asafonov.settings = {

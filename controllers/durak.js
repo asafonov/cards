@@ -3,7 +3,7 @@ class DurakController {
     this.deck = deck
     this.my = []
     this.opponent = []
-    this.main = []
+    this.game = []
     this.trump = null
 
     this.addCards(this.my, 6)
@@ -13,6 +13,19 @@ class DurakController {
     asafonov.messageBus.send(asafonov.events.TRUMP_UPDATED, this.trump)
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
     asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
+    this.addEventListeners()
+  }
+
+  addEventListeners() {
+    this.updateEventListeners(true)
+  }
+
+  removeEventListeners() {
+    this.removeEventListeners(false)
+  }
+
+  updateEventListeners (add) {
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.CARD_CLICKED, this,'playerMove')
   }
 
   addCards (arr, cnt) {
@@ -28,5 +41,13 @@ class DurakController {
   }
 
   playerMove (index) {
+    const card = this.my.splice(index, 1)[0]
+    this.game.push(card)
+    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
+    asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
+  }
+
+  destroy() {
+    this.removeEventListeners()
   }
 }
