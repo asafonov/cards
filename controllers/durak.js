@@ -26,4 +26,7 @@ class DurakController {
     const ordinaries = this.my.filter(a => a.suit !== this.trump.suit).sort((a, b) => a.valueD > b.valueD ? -1 : 1)
     this.my = ordinaries.concat(trumps)
   }
+
+  playerMove (index) {
+  }
 }

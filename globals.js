@@ -4,7 +4,8 @@ window.asafonov.messageBus = new MessageBus()
 window.asafonov.events = {
   MY_UPDATED: 'myUpdated',
   OPPONENT_UPDATED: 'opponentUpdated',
-  TRUMP_UPDATED: 'trumpUpdated'
+  TRUMP_UPDATED: 'trumpUpdated',
+  CARD_CLICKED: 'cardClicked'
 }
 window.asafonov.settings = {
 }

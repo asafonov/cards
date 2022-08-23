@@ -20,12 +20,18 @@ class GameBoardView {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
   }
 
+  onMyCardClick (index) {
+    asafonov.messageBus.send(asafonov.events.CARD_CLICKED, index)
+  }
+
   onMyUpdated (list) {
     this.myContainer.innerHTML = ''
 
     for (let i = 0; i < list.length; ++i) {
       const cardView = new CardView(list[i])
-      this.myContainer.appendChild(cardView.getElement())
+      const div = cardView.getElement()
+      div.addEventListener('click', () => this.onMyCardClick(i))
+      this.myContainer.appendChild(div)
       cardView.destroy()
     }
   }
