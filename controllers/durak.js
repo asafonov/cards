@@ -78,6 +78,61 @@ class DurakController {
   playerReply (index) {
   }
 
+  playerCanMove() {
+    if (this.game.length % 2 === 0) {
+      const playerCanContinue = this.playerCanContinue()
+
+      if (! playerCanContinue) {
+        this.round()
+        this.addCardsFromDeck(['my', 'opponent'])
+      }
+    } else {
+      const playerCanReply = this.playerCanReply()
+
+      if (! playerCanReply) {
+        this.playerTakesCards()
+      }
+    }
+
+  }
+
+  playerCanContinue() {
+    let playerCanContinue = this.game.length === 0
+
+    for (let i = 0; i < this.game.length; ++i) {
+      for (let j = 0; j < this.my.length; ++j) {
+        if (this.my[j].valueD === this.game[i].valueD) {
+          playerCanContinue = true
+          break
+        }
+      }
+    }
+    return playerCanContinue
+  }
+
+  playerCanReply() {
+    let playerCanReply = false
+    const cardToBeat = this.game[this.game.length - 1]
+
+    for (let i = 0; i < this.my.length; ++i) {
+      if ((this.my[i].valueD > cardToBeat.valueD && this.my[i].suit === cardToBeat.suit)
+         || (this.my[i].suit === this.trump.suit && cardToBeat.suit !== this.trump.suit)) {
+        playerCanReply = true
+        break
+      }
+    }
+
+    return playerCanReply
+  }
+
+  playerTakesCards() {
+    this.my = this.my.concat(this.game)
+    this.sort()
+    this.game = []
+    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
+    asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
+  }
+
   opponentMove() {
     let card
 
@@ -91,6 +146,7 @@ class DurakController {
       this.opponent.splice(this.opponent.indexOf(card), 1)
       this.game.push(card)
       asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
+      setTimeout(() => this.playerCanMove(), 500)
     } else {
       this.opponent = this.opponent.concat(this.game)
       this.game = []
@@ -118,6 +174,11 @@ class DurakController {
     }
 
     return minCard || minTrumpCard
+  }
+
+  round () {
+    this.game = []
+    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
   }
 
   addCardsFromDeck (order) {
