@@ -10,7 +10,7 @@ class Deck {
         this.deck.push({
           suit: this.suits[i],
           value: this.values[this.values.length - 1 - j],
-          valueD: j
+          valueD: this.values.length - 1 - j
         })
       }
     }

@@ -45,6 +45,35 @@ class DurakController {
     this.game.push(card)
     asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
+    setTimeout(() => this.opponentMove(), Math.random() * 2000)
+  }
+
+  opponentMove() {
+    const cardToBeat = this.game[this.game.length - 1]
+    let minCard, minTrumpCard
+
+    for (let i = 0; i < this.opponent.length; ++i) {
+      if (this.opponent[i].valueD > cardToBeat.valueD && this.opponent[i].suit === cardToBeat.suit && (! minCard || this.opponent[i].valueD < minCard.value)) {
+        minCard = this.opponent[i]
+      }
+
+      if (this.opponent[i].suit === this.trump.suit && cardToBeat.suit !== this.trump.suit && (! minTrumpCard || this.opponent.valueD < minTrumpCard.valueD)) {
+        minTrumpCard = this.opponent[i]
+      }
+    }
+
+    minCard = minCard || minTrumpCard
+
+    if (minCard) {
+      this.opponent.splice(this.opponent.indexOf(minCard), 1)
+      this.game.push(minCard)
+    } else {
+      this.opponent = this.opponent.concat(this.game)
+      this.game = []
+    }
+
+    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
+    asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)    
   }
 
   destroy() {
