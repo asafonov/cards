@@ -35,20 +35,75 @@ class DurakController {
   }
 
   sort() {
-    const trumps = this.my.filter(a => a.suit === this.trump.suit).sort((a, b) => a.valueD > b.valueD ? -1 : 1)
-    const ordinaries = this.my.filter(a => a.suit !== this.trump.suit).sort((a, b) => a.valueD > b.valueD ? -1 : 1)
+    const trumps = this.my.filter(a => a.suit === this.trump.suit).sort((a, b) => a.valueD > b.valueD ? 1 : -1)
+    const ordinaries = this.my.filter(a => a.suit !== this.trump.suit).sort((a, b) => a.valueD > b.valueD ? 1 : -1)
     this.my = ordinaries.concat(trumps)
   }
 
   playerMove (index) {
-    const card = this.my.splice(index, 1)[0]
-    this.game.push(card)
-    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
-    asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
-    setTimeout(() => this.opponentMove(), Math.random() * 2000)
+    let cardAllowed = false
+
+    if (this.game.length % 2 === 0) {
+      cardAllowed = this.playerContinue(index)
+    } else {
+      cardAllowed = this.playerReply(index)
+    }
+
+    if (cardAllowed) {
+      asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
+      asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
+      setTimeout(() => this.opponentMove(), Math.random() * 1000 + 500)
+    }
+  }
+
+  playerContinue (index) {
+    const card = this.my[index]
+    let cardAllowed = this.game.length === 0
+
+    for (let i = 0; i < this.game.length; ++i) {
+      if (card.valueD === this.game[i].valueD) {
+        cardAllowed = true
+        break
+      }
+    }
+
+    if (cardAllowed) {
+      this.my.splice(index, 1)
+      this.game.push(card)
+    }
+
+    return cardAllowed
+  }
+
+  playerReply (index) {
   }
 
   opponentMove() {
+    let card
+
+    if (this.game.length % 2 === 0) {
+      card = this.opponentContinue()
+    } else {
+      card = this.opponentReply()
+    }
+
+    if (card) {
+      this.opponent.splice(this.opponent.indexOf(card), 1)
+      this.game.push(card)
+      asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
+    } else {
+      this.opponent = this.opponent.concat(this.game)
+      this.game = []
+      this.addCardsFromDeck(['my', 'opponent'])
+    }
+
+    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
+  }
+
+  opponentContinue() {
+  }
+
+  opponentReply() {
     const cardToBeat = this.game[this.game.length - 1]
     let minCard, minTrumpCard
 
@@ -62,18 +117,20 @@ class DurakController {
       }
     }
 
-    minCard = minCard || minTrumpCard
+    return minCard || minTrumpCard
+  }
 
-    if (minCard) {
-      this.opponent.splice(this.opponent.indexOf(minCard), 1)
-      this.game.push(minCard)
-    } else {
-      this.opponent = this.opponent.concat(this.game)
-      this.game = []
+  addCardsFromDeck (order) {
+    for (let i = 0; i < order.length; ++i) {
+      const arr = this[order[i]]
+
+      for (let j = 0; j < 6 - arr.length; ++j) {
+        arr.push(this.deck.getCard())
+      }
     }
 
-    asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
-    asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)    
+    asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
+    asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
   }
 
   destroy() {
