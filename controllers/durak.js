@@ -212,6 +212,7 @@ class DurakController {
       }
     }
 
+    this.sort()
     asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
   }
