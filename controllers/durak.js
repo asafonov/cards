@@ -184,8 +184,9 @@ class DurakController {
   addCardsFromDeck (order) {
     for (let i = 0; i < order.length; ++i) {
       const arr = this[order[i]]
+      const length = arr.length
 
-      for (let j = 0; j < 6 - arr.length; ++j) {
+      for (let j = 0; j < 6 - length; ++j) {
         arr.push(this.deck.getCard())
       }
     }
