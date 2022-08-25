@@ -5,6 +5,7 @@ class DurakController {
     this.opponent = []
     this.game = []
     this.trump = null
+    this.opponentMoveTimeout = 600
 
     this.addCards(this.my, 6)
     this.addCards(this.opponent, 6)
@@ -52,7 +53,7 @@ class DurakController {
     if (cardAllowed) {
       asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
       asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
-      setTimeout(() => this.opponentMove(), Math.random() * 1000 + 500)
+      setTimeout(() => this.opponentMove(), Math.random() * this.opponentMoveTimeout * 3)
     }
   }
 
@@ -85,6 +86,7 @@ class DurakController {
       if (! playerCanContinue) {
         this.round()
         this.addCardsFromDeck(['my', 'opponent'])
+        setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
       }
     } else {
       const playerCanReply = this.playerCanReply()
@@ -107,6 +109,7 @@ class DurakController {
         }
       }
     }
+
     return playerCanContinue
   }
 
@@ -146,17 +149,35 @@ class DurakController {
       this.opponent.splice(this.opponent.indexOf(card), 1)
       this.game.push(card)
       asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
-      setTimeout(() => this.playerCanMove(), 500)
+      setTimeout(() => this.playerCanMove(), this.opponentMoveTimeout)
     } else {
       this.opponent = this.opponent.concat(this.game)
       this.game = []
-      this.addCardsFromDeck(['my', 'opponent'])
+      this.addCardsFromDeck(this.game.length % 2 === 0 ? ['opponent', 'my'] : ['my', 'opponent'])
     }
 
     asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
   }
 
   opponentContinue() {
+    let minCard
+
+    for (let i = 0; i < this.opponent.length; ++i) {
+      if (! minCard || minCard.valueD > this.opponent[i].valueD || (this.opponent[i].suit !== this.trump.suit && minCard.suit === this.trump.suit)) {
+        if (this.game.length === 0) {
+          minCard = this.opponent[i]
+          continue
+        }
+
+        for (let j = 0; j < this.game.length; ++j) {
+          if (minCard.valueD === this.game[i].valueD) {
+            minCard = this.opponent[i]
+          }
+        }
+      }
+    }
+
+    return minCard
   }
 
   opponentReply() {
