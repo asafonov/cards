@@ -53,7 +53,7 @@ class DurakController {
     if (cardAllowed) {
       asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
       asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
-      setTimeout(() => this.opponentMove(), Math.random() * this.opponentMoveTimeout * 3)
+      setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
     }
   }
 
