@@ -21,4 +21,10 @@ class Deck {
   getCard() {
     return this.deck.pop()
   }
+
+  getNextSuit (suit) {
+    const index = this.suits.indexOf(suit)
+    const nextIndex = (index + 1) % this.suits.length
+    return this.suits[nextIndex]
+  }
 }

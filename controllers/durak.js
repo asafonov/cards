@@ -15,6 +15,7 @@ class DurakController {
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
     asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
     this.addEventListeners()
+    this.resolveFirstMove()
   }
 
   addEventListeners() {
@@ -27,6 +28,38 @@ class DurakController {
 
   updateEventListeners (add) {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.CARD_CLICKED, this,'playerMove')
+  }
+
+  resolveFirstMove() {
+    let firstMoveResolved = false
+    let currentSuit = this.trump.suit
+
+    while (! firstMoveResolved) {
+      const myMin = this.findMinCardOfSuit(this.my, currentSuit)
+      const opponentMin = this.findMinCardOfSuit(this.opponent, currentSuit)
+
+      if (opponentMin && myMin) {
+        firstMoveResolved = true
+        opponentMin.valueD < myMin.valueD && this.opponentMove()
+      } else if (! opponentMin && ! myMin) {
+        currentSuit = deck.getNextSuit(currentSuit)
+      } else {
+        firstMoveResolved = true
+        opponentMin && this.opponentMove()
+      }
+    }
+  }
+
+  findMinCardOfSuit (arr, suit) {
+    let minCard
+
+    for (let i = 0; i < arr.length; ++i) {
+      if (arr[i].suit === suit && (! minCard || arr[i].valueD < minCard.valueD)) {
+        minCard = arr[i]
+      }
+    }
+
+    return minCard
   }
 
   addCards (arr, cnt) {
@@ -103,6 +136,7 @@ class DurakController {
 
       if (! playerCanReply) {
         this.playerTakesCards()
+        setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
       }
     }
 
