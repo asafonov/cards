@@ -148,8 +148,9 @@ class DurakController {
 
   opponentMove() {
     let card
+    const opponentStarted = this.game.length % 2 === 0
 
-    if (this.game.length % 2 === 0) {
+    if (opponentStarted) {
       card = this.opponentContinue()
     } else {
       card = this.opponentReply()
@@ -161,7 +162,7 @@ class DurakController {
       asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
       setTimeout(() => this.playerCanMove(), this.opponentMoveTimeout)
     } else {
-      this.opponent = this.opponent.concat(this.game)
+      ! opponentStarted && (this.opponent = this.opponent.concat(this.game))
       this.game = []
       this.addCardsFromDeck(this.game.length % 2 === 0 ? ['opponent', 'my'] : ['my', 'opponent'])
     }
