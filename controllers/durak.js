@@ -77,6 +77,16 @@ class DurakController {
   }
 
   playerReply (index) {
+    const card = this.my[index]
+    const cardToBeat = this.game[this.game.length - 1]
+
+    if ((card.valueD > cardToBeat.valueD && card.suit === cardToBeat.suit) || (card.suit === this.trump.suit && cardToBeat.suit !== this.trump.suit)) {
+      this.my.splice(index, 1)
+      this.game.push(card)
+      return true
+    }
+
+    return false
   }
 
   playerCanMove() {
@@ -170,7 +180,7 @@ class DurakController {
         }
 
         for (let j = 0; j < this.game.length; ++j) {
-          if (minCard.valueD === this.game[i].valueD) {
+          if (minCard && minCard.valueD === this.game[i].valueD) {
             minCard = this.opponent[i]
           }
         }
