@@ -27,4 +27,8 @@ class Deck {
     const nextIndex = (index + 1) % this.suits.length
     return this.suits[nextIndex]
   }
+
+  isEmpty() {
+    return this.deck.length === 0
+  }
 }
