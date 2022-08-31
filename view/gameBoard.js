@@ -60,9 +60,12 @@ class GameBoardView {
 
   onTrumpUpdated (card) {
     this.trumpContainer.innerHTML = ''
-    const cardView = new CardView(card)
-    this.trumpContainer.appendChild(cardView.getElement())
-    cardView.destroy()
+
+    if (card) {
+      const cardView = new CardView(card)
+      this.trumpContainer.appendChild(cardView.getElement())
+      cardView.destroy()
+    }
   }
 
   destroy() {

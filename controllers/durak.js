@@ -5,6 +5,7 @@ class DurakController {
     this.opponent = []
     this.game = []
     this.trump = null
+    this.trumpGone = false
     this.opponentMoveTimeout = 600
 
     this.addCards(this.my, 6)
@@ -247,13 +248,28 @@ class DurakController {
     asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
   }
 
+  giveTrumpAway (arr) {
+    arr.push(this.trump)
+    this.trumpGone = true
+    asafonov.messageBus.send(asafonov.events.TRUMP_UPDATED, false)
+  }
+
   addCardsFromDeck (order) {
+    if (this.trumpGone) return
+
     for (let i = 0; i < order.length; ++i) {
+      if (this.trumpGone) break
+
       const arr = this[order[i]]
       const length = arr.length
 
       for (let j = 0; j < 6 - length; ++j) {
-        arr.push(this.deck.getCard())
+        if (! this.deck.isEmpty()) {
+          arr.push(this.deck.getCard())
+        } else {
+          this.giveTrumpAway(arr)
+          break
+        }
       }
     }
 
