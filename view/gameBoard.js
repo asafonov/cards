@@ -4,6 +4,8 @@ class GameBoardView {
     this.opponentContainer = document.querySelector('.board .opponent')
     this.trumpContainer = document.querySelector('.board .trump')
     this.gameContainer = document.querySelector('.board .game')
+    this.takeBtn = document.querySelector('.take')
+    this.doneBtn = document.querySelector('.done')
     this.addEventListeners(true)
   }
 
@@ -20,6 +22,8 @@ class GameBoardView {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.OPPONENT_UPDATED, this, 'onOpponentUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_UPDATED, this, 'onGameUpdated')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
   }
 
   onMyCardClick (index) {
@@ -66,6 +70,14 @@ class GameBoardView {
       this.trumpContainer.appendChild(cardView.getElement())
       cardView.destroy()
     }
+  }
+
+  onTakeBtnUpdate (visible) {
+    this.takeBtn.style.display = visible ? 'block' : 'none'
+  }
+
+  onDoneBtnUpdate (visible) {
+    this.doneBtn.style.display = visible ? 'block' : 'none'
   }
 
   destroy() {

@@ -115,6 +115,7 @@ class DurakController {
     const cardToBeat = this.game[this.game.length - 1]
 
     if ((card.valueD > cardToBeat.valueD && card.suit === cardToBeat.suit) || (card.suit === this.trump.suit && cardToBeat.suit !== this.trump.suit)) {
+      asafonov.messageBus.send(asafonov.events.TAKE_BTN_UPDATE, false)
       this.my.splice(index, 1)
       this.game.push(card)
       return true
@@ -179,6 +180,7 @@ class DurakController {
     this.game = []
     asafonov.messageBus.send(asafonov.events.GAME_UPDATED, this.game)
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
+    asafonov.messageBus.send(asafonov.events.TAKE_BTN_UPDATE, false)
   }
 
   opponentMove() {
@@ -196,6 +198,7 @@ class DurakController {
       this.game.push(card)
       asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
       setTimeout(() => this.playerCanMove(), this.opponentMoveTimeout)
+      opponentStarted && asafonov.messageBus.send(asafonov.events.TAKE_BTN_UPDATE, true)
     } else {
       ! opponentStarted && (this.opponent = this.opponent.concat(this.game))
       this.game = []
