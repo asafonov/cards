@@ -200,4 +200,25 @@ svg * {
   height: 100%;
 }
 
+.button {
+  padding-top: 1.5vw;
+  padding-bottom: 1.5vw;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  color: white;
+  font-size: 2vw;
+  border-radius: 2vw;
+  position: absolute;
+  top: 1vw;
+  right: 1vw;
+}
 
+.take {
+  background-color: #990f02;
+  display: none;
+}
+
+.done {
+  background-color: #5dbb63;
+  display: none;
+}

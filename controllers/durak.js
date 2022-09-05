@@ -29,6 +29,7 @@ class DurakController {
 
   updateEventListeners (add) {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.CARD_CLICKED, this,'playerMove')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_CLICKED, this,'playerTakesCards')
   }
 
   resolveFirstMove() {
