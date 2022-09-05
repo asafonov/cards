@@ -28,8 +28,15 @@ class DurakController {
   }
 
   updateEventListeners (add) {
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.CARD_CLICKED, this,'playerMove')
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_CLICKED, this,'playerTakesCards')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.CARD_CLICKED, this, 'playerMove')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.BTN_CLICKED, this, 'onBtnClicked')
+  }
+
+  onBtnClicked (params) {
+    if (params.type === 'take') {
+      this.playerTakesCards()
+      setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
+    }
   }
 
   resolveFirstMove() {

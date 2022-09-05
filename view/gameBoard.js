@@ -6,7 +6,7 @@ class GameBoardView {
     this.gameContainer = document.querySelector('.board .game')
     this.takeBtn = document.querySelector('.take')
     this.doneBtn = document.querySelector('.done')
-    this.addEventListeners(true)
+    this.addEventListeners()
   }
 
   addEventListeners() {
@@ -24,10 +24,20 @@ class GameBoardView {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_UPDATED, this, 'onGameUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
+    this.takeBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onTakeBtnClick())
+    this.doneBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onDoneBtnClick())
   }
 
   onMyCardClick (index) {
     asafonov.messageBus.send(asafonov.events.CARD_CLICKED, index)
+  }
+
+  onTakeBtnClick() {
+    asafonov.messageBus.send(asafonov.events.BTN_CLICKED, {type: 'take'})
+  }
+
+  onDoneBtnClick() {
+    asafonov.messageBus.send(asafonov.events.BTN_CLICKED, {type: 'done'})
   }
 
   onMyUpdated (list) {
