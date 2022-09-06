@@ -236,8 +236,9 @@ class DurakController {
         }
 
         for (let j = 0; j < this.game.length; ++j) {
-          if (minCard && minCard.valueD === this.game[i].valueD) {
+          if (this.opponent[i].valueD === this.game[j].valueD) {
             minCard = this.opponent[i]
+            break
           }
         }
       }
