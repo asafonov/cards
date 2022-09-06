@@ -256,7 +256,7 @@ class DurakController {
         minCard = this.opponent[i]
       }
 
-      if (this.opponent[i].suit === this.trump.suit && cardToBeat.suit !== this.trump.suit && (! minTrumpCard || this.opponent.valueD < minTrumpCard.valueD)) {
+      if (this.opponent[i].suit === this.trump.suit && cardToBeat.suit !== this.trump.suit && (! minTrumpCard || this.opponent[i].valueD < minTrumpCard.valueD)) {
         minTrumpCard = this.opponent[i]
       }
     }
