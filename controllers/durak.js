@@ -36,6 +36,11 @@ class DurakController {
     if (params.type === 'take') {
       this.playerTakesCards()
       setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
+    } else {
+      asafonov.messageBus.send(asafonov.events.DONE_BTN_UPDATE, false)
+      this.round()
+      this.addCardsFromDeck(['my', 'opponent'])
+      setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
     }
   }
 
@@ -111,6 +116,7 @@ class DurakController {
     }
 
     if (cardAllowed) {
+      asafonov.messageBus.send(asafonov.events.DONE_BTN_UPDATE, false)
       this.my.splice(index, 1)
       this.game.push(card)
     }
@@ -159,6 +165,7 @@ class DurakController {
       for (let j = 0; j < this.my.length; ++j) {
         if (this.my[j].valueD === this.game[i].valueD) {
           playerCanContinue = true
+          asafonov.messageBus.send(asafonov.events.DONE_BTN_UPDATE, true)
           break
         }
       }
@@ -175,6 +182,7 @@ class DurakController {
       if ((this.my[i].valueD > cardToBeat.valueD && this.my[i].suit === cardToBeat.suit)
          || (this.my[i].suit === this.trump.suit && cardToBeat.suit !== this.trump.suit)) {
         playerCanReply = true
+        asafonov.messageBus.send(asafonov.events.TAKE_BTN_UPDATE, true)
         break
       }
     }
@@ -206,7 +214,6 @@ class DurakController {
       this.game.push(card)
       asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
       setTimeout(() => this.playerCanMove(), this.opponentMoveTimeout)
-      opponentStarted && asafonov.messageBus.send(asafonov.events.TAKE_BTN_UPDATE, true)
     } else {
       ! opponentStarted && (this.opponent = this.opponent.concat(this.game))
       this.game = []
