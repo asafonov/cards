@@ -35,6 +35,7 @@ class DurakController {
   onBtnClicked (params) {
     if (params.type === 'take') {
       this.playerTakesCards()
+      this.addCardsFromDeck(['opponent'])
       setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
     } else {
       asafonov.messageBus.send(asafonov.events.DONE_BTN_UPDATE, false)
@@ -152,6 +153,7 @@ class DurakController {
 
       if (! playerCanReply) {
         this.playerTakesCards()
+        this.addCardsFromDeck(['opponent'])
         setTimeout(() => this.opponentMove(), this.opponentMoveTimeout)
       }
     }
