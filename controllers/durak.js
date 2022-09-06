@@ -217,7 +217,11 @@ class DurakController {
       asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
       setTimeout(() => this.playerCanMove(), this.opponentMoveTimeout)
     } else {
-      ! opponentStarted && (this.opponent = this.opponent.concat(this.game))
+      if (! opponentStarted) {
+        this.opponent = this.opponent.concat(this.game)
+        asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
+      }
+
       this.game = []
       this.addCardsFromDeck(this.game.length % 2 === 0 ? ['opponent', 'my'] : ['my', 'opponent'])
     }
