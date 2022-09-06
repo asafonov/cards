@@ -1,5 +1,5 @@
 class CardView {
-  constructor(card) {
+  constructor (card) {
     this.model = card
     this.colors = {
       hearts: 'red',
@@ -49,11 +49,15 @@ class CardView {
 
   initElement() {
     this.element = document.createElement('div')
-    this.element.className = `card ${this.model.suit} ${this.model.value} ${this.getColor(this.model.suit)}`
+    this.element.className = 'card'
     this.element.innerHTML = '<div class="body"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 89"><rect rx="4"/></svg></div>'
-    this.element.innerHTML += `<div class="suit top">${this.getSuit(this.model.suit)}</div><div class="suit bottom">${this.getSuit(this.model.suit)}</div>`
-    this.element.innerHTML += `<div class="value top">${this.getValue(this.model.value)}</div><div class="value bottom">${this.getValue(this.model.value)}</div>`
-    this.element.innerHTML += `<div class="middle">${this.getBigValue(this.model.value)}</div>`
+
+    if (this.model) {
+      this.element.className += ` ${this.model.suit} ${this.model.value} ${this.getColor(this.model.suit)}`
+      this.element.innerHTML += `<div class="suit top">${this.getSuit(this.model.suit)}</div><div class="suit bottom">${this.getSuit(this.model.suit)}</div>`
+      this.element.innerHTML += `<div class="value top">${this.getValue(this.model.value)}</div><div class="value bottom">${this.getValue(this.model.value)}</div>`
+      this.element.innerHTML += `<div class="middle">${this.getBigValue(this.model.value)}</div>`
+    }
   }
 
   getElement() {

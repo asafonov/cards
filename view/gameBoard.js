@@ -56,7 +56,7 @@ class GameBoardView {
     this.opponentContainer.innerHTML = ''
 
     for (let i = 0; i < list.length; ++i) {
-      const cardView = new CardView(list[i])
+      const cardView = new CardView()
       this.opponentContainer.appendChild(cardView.getElement())
       cardView.destroy()
     }
