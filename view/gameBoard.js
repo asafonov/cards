@@ -1,5 +1,6 @@
 class GameBoardView {
   constructor() {
+    this.compactCount = 8
     this.myContainer = document.querySelector('.board .me')
     this.opponentContainer = document.querySelector('.board .opponent')
     this.trumpContainer = document.querySelector('.board .trump')
@@ -42,6 +43,7 @@ class GameBoardView {
 
   onMyUpdated (list) {
     this.myContainer.innerHTML = ''
+    this.myContainer.classList[list.length > this.compactCount ? 'add' : 'remove']('compact')
 
     for (let i = 0; i < list.length; ++i) {
       const cardView = new CardView(list[i])
@@ -54,6 +56,7 @@ class GameBoardView {
 
   onOpponentUpdated (list) {
     this.opponentContainer.innerHTML = ''
+    this.opponentContainer.classList[list.length > this.compactCount ? 'add' : 'remove']('compact')
 
     for (let i = 0; i < list.length; ++i) {
       const cardView = new CardView()
@@ -64,6 +67,7 @@ class GameBoardView {
 
   onGameUpdated (list) {
     this.gameContainer.innerHTML = ''
+    this.gameContainer.classList[list.length > this.compactCount ? 'add' : 'remove']('compact')
 
     for (let i = 0; i < list.length; ++i) {
       const cardView = new CardView(list[i])

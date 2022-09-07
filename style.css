@@ -237,3 +237,8 @@ svg * {
 .card.back .middle {
   display: none;
 }
+
+.compact .card {
+  margin-left:calc((var(--card_size)*-0.4));
+  left: calc(var(--card_size)*0.09);
+}
