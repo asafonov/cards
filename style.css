@@ -223,3 +223,17 @@ svg * {
   background-color: #5dbb63;
   display: none;
 }
+
+.card.back .body svg rect.pattern {
+  fill: url(#img1);
+}
+
+.card.back pattern path {
+  fill: red;
+}
+
+.card.back .suit,
+.card.back .value,
+.card.back .middle {
+  display: none;
+}
