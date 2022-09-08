@@ -9,7 +9,8 @@ window.asafonov.events = {
   CARD_CLICKED: 'cardClicked',
   TAKE_BTN_UPDATE: 'takeBtnUpdate',
   DONE_BTN_UPDATE: 'doneBtnUpdate',
-  BTN_CLICKED: 'btnClicked'
+  BTN_CLICKED: 'btnClicked',
+  GAME_OVER: 'gameOver'
 }
 window.asafonov.settings = {
 }

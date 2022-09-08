@@ -280,6 +280,7 @@ class DurakController {
   }
 
   addCardsFromDeck (order) {
+    this.isGameOver()
     if (this.trumpGone) return
 
     for (let i = 0; i < order.length; ++i) {
@@ -301,6 +302,15 @@ class DurakController {
     this.sort()
     asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
+  }
+
+  isGameOver() {
+    if (this.my.length === 0 || this.opponent.length === 0) {
+      asafonov.messageBus.send(asafonov.events.GAME_OVER, this.my.length === 0)
+      return true
+    }
+
+    return false
   }
 
   destroy() {

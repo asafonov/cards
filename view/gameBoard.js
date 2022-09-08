@@ -25,6 +25,7 @@ class GameBoardView {
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_UPDATED, this, 'onGameUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
+    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_OVER, this, 'onGameOver')
     this.takeBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onTakeBtnClick())
     this.doneBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onDoneBtnClick())
   }
@@ -92,6 +93,16 @@ class GameBoardView {
 
   onDoneBtnUpdate (visible) {
     this.doneBtn.style.display = visible ? 'block' : 'none'
+  }
+
+  onGameOver (isWon) {
+    if (isWon) {
+      alert('Congratulations! You won!')
+    } else {
+      alert('You lose. Maybe next time?')
+    }
+
+    location.reload()
   }
 
   destroy() {
