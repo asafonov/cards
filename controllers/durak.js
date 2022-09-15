@@ -202,6 +202,8 @@ class DurakController {
   }
 
   opponentMove() {
+    if (this.isGameOver()) return
+
     let card
     const opponentStarted = this.game.length % 2 === 0
 
@@ -281,6 +283,7 @@ class DurakController {
 
   addCardsFromDeck (order) {
     this.isGameOver()
+
     if (this.trumpGone) return
 
     for (let i = 0; i < order.length; ++i) {
@@ -305,7 +308,7 @@ class DurakController {
   }
 
   isGameOver() {
-    if (this.my.length === 0 || this.opponent.length === 0) {
+    if (this.trumpGone && (this.my.length === 0 || this.opponent.length === 0)) {
       asafonov.messageBus.send(asafonov.events.GAME_OVER, this.my.length === 0)
       return true
     }
