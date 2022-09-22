@@ -220,11 +220,11 @@ svg * {
   z-index: 1;
 }
 
-.take {
+.button.take {
   display: none;
 }
 
-.done {
+.button.done {
   display: none;
 }
 
