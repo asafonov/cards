@@ -1,5 +1,5 @@
 window.asafonov = {}
-window.asafonov.version = '0.1'
+window.asafonov.version = '0.4'
 window.asafonov.messageBus = new MessageBus()
 window.asafonov.events = {
   MY_UPDATED: 'myUpdated',
