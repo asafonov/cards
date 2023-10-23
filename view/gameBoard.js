@@ -1,6 +1,6 @@
 class GameBoardView {
-  constructor (fields) {
-    const defaultFields = {
+  constructor (options) {
+    const defaultOptions = {
       containers: {
         my: true,
         opponent: true,
@@ -10,10 +10,11 @@ class GameBoardView {
       buttons: {
         take: true,
         done: true
-      }
+      },
+      maxCardsInRow: 0
     }
     this.compactCount = 8
-    this.fields = {...defaultFields, ...(fields || {})}
+    this.options = {...defaultOptions, ...(options || {})}
     this.myContainer = document.querySelector('.board .me')
     this.opponentContainer = document.querySelector('.board .opponent')
     this.trumpContainer = document.querySelector('.board .trump')
@@ -26,9 +27,11 @@ class GameBoardView {
   }
 
   hideUnusedComponents() {
-    for (let i in this.fields.containers) {
-      ! this.fields.containers[i] && (this[`${i}Container`].style.display = 'none')
+    for (let i in this.options.containers) {
+      ! this.options.containers[i] && (this[`${i}Container`].style.display = 'none')
     }
+
+    ! this.options.containers.trump && (this.gameContainer.style.width = '100%')
   }
 
   addEventListeners() {
@@ -40,15 +43,15 @@ class GameBoardView {
   }
 
   updateEventListeners (add) {
-    this.fields.containers.my && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.MY_UPDATED, this, 'onMyUpdated')
-    this.fields.containers.opponentContainer && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.OPPONENT_UPDATED, this, 'onOpponentUpdated')
-    this.fields.containers.trump && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
+    this.options.containers.my && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.MY_UPDATED, this, 'onMyUpdated')
+    this.options.containers.opponent && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.OPPONENT_UPDATED, this, 'onOpponentUpdated')
+    this.options.containers.trump && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_UPDATED, this, 'onGameUpdated')
-    this.fields.buttons.take && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
-    this.fields.buttons.done && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
+    this.options.buttons.take && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
+    this.options.buttons.done && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_OVER, this, 'onGameOver')
-    this.fields.buttons.take && this.takeBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onTakeBtnClick())
-    this.fields.buttons.done && this.doneBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onDoneBtnClick())
+    this.options.buttons.take && this.takeBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onTakeBtnClick())
+    this.options.buttons.done && this.doneBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onDoneBtnClick())
   }
 
   onMyCardClick (index) {
@@ -90,10 +93,18 @@ class GameBoardView {
   onGameUpdated (list) {
     this.gameContainer.innerHTML = ''
     this.gameContainer.classList[list.length > this.compactCount ? 'add' : 'remove']('compact')
+    const rows = []
 
     for (let i = 0; i < list.length; ++i) {
+      const rowNum = this.options.maxCardsInRow > 0 ? Math.floor(i / this.options.maxCardsInRow) : 0
+
+      if (! rows[rowNum]) {
+        rows[rowNum] = document.createElement('div')
+        this.gameContainer.appendChild(rows[rowNum])
+      }
+
       const cardView = new CardView(list[i])
-      this.gameContainer.appendChild(cardView.getElement())
+      rows[rowNum].appendChild(cardView.getElement())
       cardView.destroy()
     }
   }
