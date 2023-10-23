@@ -1,13 +1,34 @@
 class GameBoardView {
-  constructor() {
+  constructor (fields) {
+    const defaultFields = {
+      containers: {
+        my: true,
+        opponent: true,
+        trump: true,
+        left: true
+      },
+      buttons: {
+        take: true,
+        done: true
+      }
+    }
     this.compactCount = 8
+    this.fields = {...defaultFields, ...(fields || {})}
     this.myContainer = document.querySelector('.board .me')
     this.opponentContainer = document.querySelector('.board .opponent')
     this.trumpContainer = document.querySelector('.board .trump')
+    this.leftContainer = document.querySelector('.board .left')
     this.gameContainer = document.querySelector('.board .game')
     this.takeBtn = document.querySelector('.take')
     this.doneBtn = document.querySelector('.done')
+    this.hideUnusedComponents()
     this.addEventListeners()
+  }
+
+  hideUnusedComponents() {
+    for (let i in this.fields.containers) {
+      ! this.fields.containers[i] && (this[`${i}Container`].style.display = 'none')
+    }
   }
 
   addEventListeners() {
@@ -19,15 +40,15 @@ class GameBoardView {
   }
 
   updateEventListeners (add) {
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.MY_UPDATED, this, 'onMyUpdated')
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.OPPONENT_UPDATED, this, 'onOpponentUpdated')
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
+    this.fields.containers.my && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.MY_UPDATED, this, 'onMyUpdated')
+    this.fields.containers.opponentContainer && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.OPPONENT_UPDATED, this, 'onOpponentUpdated')
+    this.fields.containers.trump && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TRUMP_UPDATED, this, 'onTrumpUpdated')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_UPDATED, this, 'onGameUpdated')
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
-    asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
+    this.fields.buttons.take && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.TAKE_BTN_UPDATE, this, 'onTakeBtnUpdate')
+    this.fields.buttons.done && asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.DONE_BTN_UPDATE, this, 'onDoneBtnUpdate')
     asafonov.messageBus[add ? 'subscribe' : 'unsubscribe'](asafonov.events.GAME_OVER, this, 'onGameOver')
-    this.takeBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onTakeBtnClick())
-    this.doneBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onDoneBtnClick())
+    this.fields.buttons.take && this.takeBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onTakeBtnClick())
+    this.fields.buttons.done && this.doneBtn[add ? 'addEventListener' : 'removeEventListener']('click', () => this.onDoneBtnClick())
   }
 
   onMyCardClick (index) {

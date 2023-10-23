@@ -12,11 +12,18 @@ class DurakController {
     this.addCards(this.opponent, 6)
     this.trump = this.deck.getCard()
     this.sort()
+    this.addEventListeners()
+    this.resolveFirstMove()
+  }
+
+  getBoardParams() {
+    return {}
+  }
+
+  initBoard() {
     asafonov.messageBus.send(asafonov.events.TRUMP_UPDATED, this.trump)
     asafonov.messageBus.send(asafonov.events.MY_UPDATED, this.my)
     asafonov.messageBus.send(asafonov.events.OPPONENT_UPDATED, this.opponent)
-    this.addEventListeners()
-    this.resolveFirstMove()
   }
 
   addEventListeners() {
