@@ -124,6 +124,8 @@ class DurakController {
     }
 
     if (cardAllowed) {
+      card.isPlayer = true
+      card.isBeaten = false
       asafonov.messageBus.send(asafonov.events.DONE_BTN_UPDATE, false)
       this.my.splice(index, 1)
       this.game.push(card)
@@ -137,6 +139,9 @@ class DurakController {
     const cardToBeat = this.game[this.game.length - 1]
 
     if ((card.valueD > cardToBeat.valueD && card.suit === cardToBeat.suit) || (card.suit === this.trump.suit && cardToBeat.suit !== this.trump.suit)) {
+      card.isPlayer = true
+      card.isBeaten = true
+      cardToBeat.isBeaten = true
       asafonov.messageBus.send(asafonov.events.TAKE_BTN_UPDATE, false)
       this.my.splice(index, 1)
       this.game.push(card)
@@ -257,6 +262,11 @@ class DurakController {
       }
     }
 
+    if (minCard) {
+      card.isPlayer = false
+      card.isBeaten = false
+    }
+
     return minCard
   }
 
@@ -274,7 +284,15 @@ class DurakController {
       }
     }
 
-    return minCard || minTrumpCard
+    const card = minCard || minTrumpCard
+
+    if (card) {
+      card.isPlayer = false
+      card.isBeaten = true
+      cardToBeat.isBeaten = true
+    }
+
+    return card
   }
 
   round () {
