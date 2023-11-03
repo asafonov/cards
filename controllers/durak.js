@@ -136,7 +136,7 @@ class DurakController {
 
   playerReply (index) {
     const card = this.my[index]
-    const cardToBeat = this.game[this.game.length - 1]
+    const cardToBeat = this.game.find(i => ! i.isPlayer && ! i.isBeaten)
 
     if ((card.valueD > cardToBeat.valueD && card.suit === cardToBeat.suit) || (card.suit === this.trump.suit && cardToBeat.suit !== this.trump.suit)) {
       card.isPlayer = true
@@ -190,7 +190,7 @@ class DurakController {
 
   playerCanReply() {
     let playerCanReply = false
-    const cardToBeat = this.game[this.game.length - 1]
+    const cardToBeat = this.game.find(i => ! i.isPlayer && ! i.isBeaten)
 
     for (let i = 0; i < this.my.length; ++i) {
       if ((this.my[i].valueD > cardToBeat.valueD && this.my[i].suit === cardToBeat.suit)
@@ -263,15 +263,15 @@ class DurakController {
     }
 
     if (minCard) {
-      card.isPlayer = false
-      card.isBeaten = false
+      minCard.isPlayer = false
+      minCard.isBeaten = false
     }
 
     return minCard
   }
 
   opponentReply() {
-    const cardToBeat = this.game[this.game.length - 1]
+    const cardToBeat = this.game.find(i => i.isPlayer && ! i.isBeaten)
     let minCard, minTrumpCard
 
     for (let i = 0; i < this.opponent.length; ++i) {
